@@ -1,18 +1,28 @@
 What is this?
 -------------
 A clean, minimal implementation of the SWSH transformation described in [1,2]
-for (half) integer fields providing ${}_s f \Longleftrightarrow {}_s a_{lm}$.
+for (half) integer fields providing the nodal <-> modal map:
+${}_s f \Longleftrightarrow {}_s a_{lm}$.
 
-Refs:
-[1] ...
-
-[2] ...
+References:
+[1] Beyer, Florian, Boris Daszuta, and Jörg Frauendiener.
+    "A spectral method for half-integer spin fields based on spin-weighted
+     spherical harmonics."
+    Classical and Quantum Gravity 32, no. 17 (2015): 175013.
+[2] Beyer, Florian, Boris Daszuta, Jörg Frauendiener, and Ben Whale.
+    "Numerical evolutions of fields on the 2-sphere using a spectral method
+    based on spin-weighted spherical harmonics."
+    Classical and Quantum Gravity 31, no. 7 (2014): 075019.
 
 
 What is requried?
 -----------------
-numba, numpy and pyfftw;
-matplotlib for (visual) inspection of examples.
+Minimally:
+numba, numpy, pyfftw and joblib;
+
+For the example:
+matplotlib
+
 
 How do I use this?
 ------------------
@@ -21,6 +31,9 @@ import multi_SWSH as mS
 See also example.py
 
 
-What else could be done?
-------------------------
-The whole thing could be wrapped into a single, (JIT) compiled function.
+TODO:
+-----
+(*) Clean up docstrings and provide prototype '>>>'
+(*) The whole thing could be wrapped into a single, (JIT) compiled function.
+(*) Unit tests [use the internal _main fcns].
+(*) Make this into a fully fledged package and release it.

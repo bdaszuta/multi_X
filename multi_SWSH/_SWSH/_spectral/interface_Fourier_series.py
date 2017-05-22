@@ -15,16 +15,18 @@ In a newer version of pyfftw fix the ifft such that conjugation trick is not
 required.
 """
 
-import multiprocessing        # purely for thread-count estimation
-import numpy as np
-import pyfftw as pfft
+import multiprocessing as _mp        # purely for thread-count estimation
+import numpy as _np
+import pyfftw as _pfft
 
 
 class FourierSeries:
-
+    '''
+    Small class for making use of FFTW via pyfftw bindings.
+    '''
     def __init__(self, use_cache=True,
                  fftw_plan_effort='FFTW_MEASURE',
-                 fftw_threads=multiprocessing.cpu_count()):
+                 fftw_threads=_mp.cpu_count()):
 
         # ESTIMATE,MEASURE,EXHAUSTIVE
         self.fftw_plan_effort = fftw_plan_effort
@@ -161,11 +163,11 @@ class FourierSeries:
         else:
 
             # Setup
-            n = pfft.simd_alignment
-            mem = pfft.n_byte_align_empty(data.shape, n, dtype=type_xform)
-            rfft = pfft.builders.rfft(mem,
-                                      planner_effort=self.fftw_plan_effort,
-                                      threads=self.fftw_threads)
+            n = _pfft.simd_alignment
+            mem = _pfft.n_byte_align_empty(data.shape, n, dtype=type_xform)
+            rfft = _pfft.builders.rfft(mem,
+                                       planner_effort=self.fftw_plan_effort,
+                                       threads=self.fftw_threads)
 
             # Perform transform
             mem[:] = data[:]
@@ -199,11 +201,11 @@ class FourierSeries:
         else:
 
             # Setup
-            n = pfft.simd_alignment
-            mem = pfft.n_byte_align_empty(data.shape, n, dtype=type_xform)
-            irfft = pfft.builders.irfft(mem,
-                                        planner_effort=self.fftw_plan_effort,
-                                        threads=self.fftw_threads)
+            n = _pfft.simd_alignment
+            mem = _pfft.n_byte_align_empty(data.shape, n, dtype=type_xform)
+            irfft = _pfft.builders.irfft(mem,
+                                         planner_effort=self.fftw_plan_effort,
+                                         threads=self.fftw_threads)
 
             # Perform transform
             mem[:] = data[:]
@@ -244,19 +246,19 @@ class FourierSeries:
 
             # Perform transform
             mem[:] = data[:]
-            out = np.copy(fft())
+            out = _np.copy(fft())
         else:
-            n = pfft.simd_alignment
-            mem = pfft.n_byte_align_empty(data.shape, n, dtype=type_xform)
+            n = _pfft.simd_alignment
+            mem = _pfft.n_byte_align_empty(data.shape, n, dtype=type_xform)
 
             # Form a plan
-            fft = pfft.builders.fftn(mem,
-                                     planner_effort=self.fftw_plan_effort,
-                                     threads=self.fftw_threads)
+            fft = _pfft.builders.fftn(mem,
+                                      planner_effort=self.fftw_plan_effort,
+                                      threads=self.fftw_threads)
 
             # Perform transform
             mem[:] = data[:]
-            out = np.copy(fft())
+            out = _np.copy(fft())
 
             # Cache transform memory and plan
             if self.use_cache:
@@ -264,7 +266,7 @@ class FourierSeries:
 
         # Optional normalization
         if normalized:
-            out = out / np.prod(out.shape)
+            out = out / _np.prod(out.shape)
         return out
 
     def ifft(self, data, specified_type=False, normalized=True):
@@ -286,11 +288,11 @@ class FourierSeries:
         # type_xform = data.dtype if not specified_type else specified_type
 
         # # allocate aligned memory
-        # n = pfft.simd_alignment
-        # mem = pfft.n_byte_align_empty(data.shape, n, dtype=type_xform)
+        # n = _pfft.simd_alignment
+        # mem = _pfft.n_byte_align_empty(data.shape, n, dtype=type_xform)
 
         # # form a plan
-        # ifft = pfft.builders.ifftn(mem, \
+        # ifft = _pfft.builders.ifftn(mem, \
         #     planner_effort=self.fftw_plan_effort, \
         #     threads=self.fftw_threads)
 
@@ -300,7 +302,7 @@ class FourierSeries:
 
         # # optional normalization
         # if normalized:
-        #     out = out*np.prod(out.shape)
+        #     out = out*_np.prod(out.shape)
         # return out
 
         ##############
@@ -311,13 +313,13 @@ class FourierSeries:
         # versions -- we can instead just the the fft which is fine via
         # a conjucation trick:
         # ifft(x) = conj(fft(conj(x)))/N
-        out = np.conj(self.fft(np.conj(data), specified_type=specified_type,
-                               normalized=False))
-        out = out / np.prod(out.shape)
+        out = _np.conj(self.fft(_np.conj(data), specified_type=specified_type,
+                                normalized=False))
+        out = out / _np.prod(out.shape)
 
         # Optional normalization
         if normalized:
-            out = out * np.prod(out.shape)
+            out = out * _np.prod(out.shape)
         return out
 
     def fftshift(self, data, ax=None):
@@ -325,23 +327,23 @@ class FourierSeries:
         Shift zero frequency
         [Uses numpy shift]
         '''
-        return np.fft.fftshift(data, axes=ax)
+        return _np.fft.fftshift(data, axes=ax)
 
     def ifftshift(self, data, ax=None):
         '''
         Inverse of fftshift
         [Uses numpy shift]
         '''
-        return np.fft.ifftshift(data, axes=ax)
+        return _np.fft.ifftshift(data, axes=ax)
 
 
-def main():
-    dat = np.array(np.random.rand(1000, 1000), dtype=np.complex128)
+def _main():
+    dat = _np.array(_np.random.rand(1000, 1000), dtype=_np.complex128)
     FS = lambda use_cache: FourierSeries(use_cache=use_cache)
     return FS(False)(dat), FS(True)(dat)
 
 if __name__ == '__main__':
-    out, out_c = main()
+    out, out_c = _main()
 
 #
 # :D
