@@ -1,0 +1,37 @@
+# File types to be ignored by git
+
+
+# Ignore any folder that matches /output
+__pycache__
+_data
+.cache
+.nfs*
+
+# binary python files and objects
+*.pyc
+*.pyo
+
+# data output and visualisation
+*.data
+*.gif
+*.hdf
+*.hdf5
+*.ps
+*.gp
+*fuse_hidden*
+*dask*.json
+*.out
+
+# archives
+*.tar.gz
+*.zip
+
+#tilde backup files
+*~
+#emacs backup
+\#*\#
+.\#*
+
+
+# dask graph inspection [default]
+eval_graph.pdf

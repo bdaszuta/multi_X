@@ -1,0 +1,26 @@
+What is this?
+-------------
+A clean, minimal implementation of the SWSH transformation described in [1,2]
+for (half) integer fields providing ${}_s f \Longleftrightarrow {}_s a_{lm}$.
+
+Refs:
+[1] ...
+
+[2] ...
+
+
+What is requried?
+-----------------
+numba, numpy and pyfftw;
+matplotlib for (visual) inspection of examples.
+
+How do I use this?
+------------------
+import multi_SWSH as mS
+
+See also example.py
+
+
+What else could be done?
+------------------------
+The whole thing could be wrapped into a single, (JIT) compiled function.
