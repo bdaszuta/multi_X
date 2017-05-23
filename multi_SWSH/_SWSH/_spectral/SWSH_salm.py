@@ -10,13 +10,11 @@ import numba as _nu
 
 from . import SWSH_Imn
 from .._special import wigner_d_TN
+from ..._types import (_COMPLEX_PREC, _INT_PREC)
+from ..._settings import _JIT_KWARGS
 
 
-_COMPLEX_PREC = _np.complex128
-_INT_PREC = _np.int64
-
-
-@_nu.jit(nopython=True, nogil=True, cache=True)
+@_nu.jit(**_JIT_KWARGS)
 def _int_salm(l, l_sqFa, n_ma, m_ma, s_arr, K_mn, int_Del_quad, salm_arr):
     '''
     Jit compilation of loop for Del calculation
@@ -161,7 +159,7 @@ def int_salm(s_arr, f_arr):
     return salm_arr
 
 
-@_nu.jit(nopython=True, nogil=True, cache=True)
+@_nu.jit(**_JIT_KWARGS)
 def _h_int_salm(l2, l_sqFa, n_ma, m_ma, I_mn_m_ind, I_mn_n_ind, s_arr, J_mn,
                 h_int_Del_quad, salm_arr):
     '''
@@ -255,8 +253,8 @@ def h_int_salm(s_arr, f_arr):
     num_fun = (f_arr.shape)[0]
 
     # infer extension sampling
-    h_N_th = f_arr[0].shape[0]
-    h_N_ph = f_arr[1].shape[1]
+    h_N_th, h_N_ph = f_arr.shape[1], f_arr.shape[2]
+
     h_L_ph = _INT_PREC((h_N_ph - 1))
 
     # extension in th,ph requires more points
@@ -281,8 +279,8 @@ def h_int_salm(s_arr, f_arr):
     m_ma, n_ma = h_N_th - 1, h_N_ph - 1
 
     # index for m=1/2
-    I_mn_m_ind = h_N_th / 2
-    I_mn_n_ind = h_N_ph / 2
+    I_mn_m_ind = _INT_PREC(h_N_th / 2)
+    I_mn_n_ind = _INT_PREC(h_N_ph / 2)
 
     # prepare Jmn
     J_mn = I_mn_arr[:, I_mn_m_ind:, :]

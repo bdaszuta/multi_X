@@ -10,11 +10,8 @@
 import numpy as _np
 
 from . import SWSH_periodic_extension
+from ..._types import (_COMPLEX_PREC, _INT_PREC)
 
-
-num_prec_complex = _np.complex128
-uint_prec = _np.uint64
-int_prec = _np.int64
 
 # Fourier object instance
 FSi = None
@@ -29,7 +26,7 @@ def c_int_wei(p):
     [Modal representation]
     '''
     # Alloc
-    w_theta = _np.zeros_like(p, dtype=num_prec_complex)
+    w_theta = _np.zeros_like(p, dtype=_COMPLEX_PREC)
     # p even
     w_theta[_np.mod(p, 2) == 0] = 2 / (1 - p[_np.mod(p, 2) == 0]**2)
     # p == \pm 1
@@ -82,8 +79,8 @@ def c_h_int_wei(t, p):
     [Modal representation]
     '''
     # Alloc
-    w_theta = _np.zeros_like(t, dtype=num_prec_complex)
-    w_phi = _np.zeros_like(p, dtype=num_prec_complex)
+    w_theta = _np.zeros_like(t, dtype=_COMPLEX_PREC)
+    w_phi = _np.zeros_like(p, dtype=_COMPLEX_PREC)
 
     abs_t = _np.abs(t)
 
@@ -104,10 +101,10 @@ def h_int_wei(N_th_EE, N_ph_E):
 
     # Shift freq. and transform
     wei_th = FSi.ifft(FSi.fftshift(wei_th), normalized=True)
-    wei_th = _np.roll(wei_th, -1 + int_prec((4 + N_th_EE) / 4), axis=0)
+    wei_th = _np.roll(wei_th, -1 + _INT_PREC((4 + N_th_EE) / 4), axis=0)
 
     wei_ph = FSi.ifft(FSi.fftshift(wei_ph), normalized=True)
-    wei_ph = _np.roll(wei_ph, int_prec(N_ph_E / 4), axis=0)
+    wei_ph = _np.roll(wei_ph, _INT_PREC(N_ph_E / 4), axis=0)
     return wei_th, wei_ph
 
 

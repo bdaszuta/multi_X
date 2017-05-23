@@ -11,22 +11,16 @@ Note:
 Please use int_sf and h_int_sf as these copy coefficient arrays and retain
 the original.
 """
-from . import interface_Fourier_series
-from .._special import wigner_d_TN
-
-# import special_functions.wigner_d_TN as wig
-# import spectral.Interface_FourierSeries as FS
-
-# test analytically defined sYlm
-# import special_functions.swsh_AnSum as swsh_an
-
 import numpy as _np
 import numba as _nu
 import joblib as jl
 
 
-_COMPLEX_PREC = _np.complex128
-_INT_PREC = _np.int64
+from . import interface_Fourier_series
+from .._special import wigner_d_TN
+from ..._types import (_COMPLEX_PREC, _INT_PREC)
+from ..._settings import _JIT_KWARGS
+
 
 # Fourier object instance
 FSi = None
@@ -37,7 +31,7 @@ par = jl.Parallel(n_jobs=n_th, backend='threading')
 # par = jl.Parallel(n_jobs=n_th)
 
 
-@_nu.jit(nopython=True, nogil=True, cache=True)
+@_nu.jit(**_JIT_KWARGS)
 def _int_J_mn_ph(s_arr, salm_arr, L_th, L_ph):
     '''
     Apply phase factors to salm coefficients
@@ -61,11 +55,10 @@ def _int_J_mn_ph(s_arr, salm_arr, L_th, L_ph):
                 # if _np.abs(s_arr[f])<=l:
                 # ph = (1j)**(-s_arr[f]-n)
                 ph = ph_s[f] * ph_n[L_th + n]
-
                 salm_arr[f, ind_ln] = ph * l_sqFa * salm_arr[f, ind_ln]
 
 
-#@_nu.jit(nopython=True, nogil=True, cache=True)
+@_nu.jit(**_JIT_KWARGS)
 def _int_J_mn_Del(l, n_lim, J_mn, m0_int, n0_int, int_Del_quad,
                   s_arr, salm_til_arr):
     '''
@@ -186,7 +179,7 @@ def _int_J_mn_Del(l, n_lim, J_mn, m0_int, n0_int, int_Del_quad,
                     int_Del_quad[0, -n]
 
 
-@_nu.jit(nopython=True, nogil=True, cache=True)
+@_nu.jit(**_JIT_KWARGS)
 def _int_J_mn_Del_opt(l, n_lim, J_mn, m0_int, n0_int, int_Del_quad,
                       s, salm_til_arr):
     '''
@@ -326,8 +319,8 @@ def par_mask(J_mn_th, l_ran, int_Del_ext, L_th, L_ph,
     for l in _np.arange(l_ran[0], l_ran[1]):
         # Compute current internal Del values
         int_Del_int = wigner_d_TN.int_Del_Interior(l, int_Del_ext, L_ph)
-        int_Del_quad = \
-            wigner_d_TN.int_Del_Interior_ExtendQuad(l, int_Del_int, L_ph)
+        int_Del_quad = wigner_d_TN.int_Del_Interior_ExtendQuad(
+            l, int_Del_int, L_ph)
 
         # Maximal bandlimit in phi restricted by sampling choice
         #n_lim = _np.min(_np.array([L_ph, l]))
@@ -425,6 +418,7 @@ def int_J_mn(s_arr, salm_arr, N_th, N_ph):
     return J_mn
 
 
+@_nu.jit(**_JIT_KWARGS)
 def _int_J_mn(s_arr, salm_arr, N_th, N_ph):
     '''
     Compute functional for Fourier transform -
@@ -483,7 +477,7 @@ def _int_J_mn(s_arr, salm_arr, N_th, N_ph):
     return J_mn
 
 
-@_nu.jit(nopython=True, nogil=True, cache=True)
+@_nu.jit(**_JIT_KWARGS)
 def _h_int_K_mn_ph(h_s2_arr, h_salm_arr, h_L2_th, h_L2_ph):
     '''
     Apply phase factors to salm coefficients
@@ -505,7 +499,7 @@ def _h_int_K_mn_ph(h_s2_arr, h_salm_arr, h_L2_th, h_L2_ph):
                     ph * l_sqFa * h_salm_arr[f][h_ind_ln]
 
 
-@_nu.jit(nopython=True, nogil=True, cache=True)
+@_nu.jit(**_JIT_KWARGS)
 def _h_int_K_mn_Del(l2, n_lim, K_mn, m1, n1, h_int_Del_quad,
                     h_s2_arr, h_s_arr, h_salm_til_arr):
     '''
@@ -587,7 +581,7 @@ def _h_int_K_mn_Del(l2, n_lim, K_mn, m1, n1, h_int_Del_quad,
                         h_int_Del_quad[m_i, n_i]
 
 
-@_nu.jit(nopython=True, nogil=True, cache=True)
+@_nu.jit(**_JIT_KWARGS)
 def _h_int_K_mn_Del_opt(l2, n_lim, K_mn, m1, n1, h_int_Del_quad,
                         h_s2_arr, h_s_arr, h_salm_til_arr):
     '''
@@ -683,7 +677,8 @@ def h_int_K_mn(h_s_arr, h_salm_arr, h_N_th, h_N_ph):
     h_L2_ph = h_N_ph - 1
 
     # Extension in th,ph requires more points
-    h_N_th_E, h_N_th_EE = 2 * (h_N_th - 1), 4 * (h_N_th - 1)
+    h_N_th_E = 2 * (h_N_th - 1)
+    h_N_th_EE = 4 * (h_N_th - 1)
     h_N_ph_E = 2 * h_N_ph
 
     # Compute del face
@@ -700,7 +695,7 @@ def h_int_K_mn(h_s_arr, h_salm_arr, h_N_th, h_N_ph):
     K_mn = _np.zeros((num_fun, h_N_th_EE, h_N_ph_E), dtype=_COMPLEX_PREC)
 
     # 1/2 indices
-    m1, n1 = _INT_PREC(h_N_th_E), _INT_PREC(h_N_ph)
+    m1, n1 = h_N_th_E, h_N_ph
 
     for l2 in _np.arange(_np.min(_np.abs(h_s2_arr)), h_L2_th + 1, 2):
         # Compute current internal Del values
@@ -743,7 +738,7 @@ def h_int_sf(h_s_arr, h_salm_arr, h_N_th, h_N_ph):
     '''
     Compute half integer spin-weighted functions on S2 from salm
     '''
-
+    h_N_th, h_N_ph = _INT_PREC(h_N_th), _INT_PREC(h_N_ph)
     num_fun = h_salm_arr.shape[0]
     #h_salm_arr_cp = _np.copy(h_salm_arr)
 
@@ -754,12 +749,19 @@ def h_int_sf(h_s_arr, h_salm_arr, h_N_th, h_N_ph):
     h_sf_arr = _np.zeros((num_fun, h_N_th, h_N_ph), dtype=_COMPLEX_PREC)
 
     for f in _np.arange(0, num_fun):
-        h_sf_arr[f, :, :] = FSi.ifftshift(FSi.ifft(FSi.fftshift(K_mn_arr[f]),
-                                                   normalized=True))[:h_N_th, :h_N_ph]
+        h_sf_arr[f, :, :] = FSi.ifftshift(
+            FSi.ifft(FSi.fftshift(K_mn_arr[f]),
+                     normalized=True))[:h_N_th, :h_N_ph]
     return h_sf_arr
 
 
 def main():
+    # import special_functions.wigner_d_TN as wig
+    # import spectral.Interface_FourierSeries as FS
+
+    # test analytically defined sYlm
+    # import special_functions.swsh_AnSum as swsh_an
+
     # Instantiate Fourier object
     FSi = interface_Fourier_series.FourierSeries()
 

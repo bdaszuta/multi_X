@@ -1,9 +1,12 @@
 # File types to be ignored by git
 
 
-# Ignore any folder that matches /output
+# ignore folders
 __pycache__
 _data
+_ignore
+
+# cache etc
 .cache
 .nfs*
 

@@ -1,5 +1,8 @@
 from . import _SWSH
-from ._interface import (int_salm, h_int_salm,
-                         int_sf, h_int_sf,
-                         int_gen_rand_salm,
-                         h_int_gen_rand_salm)
+from ._SWSH._spectral.SWSH_eth import (eth_build, )
+from ._interface import (sf_to_salm, salm_to_sf, generate_random_salm)
+from ._types import *
+
+# provide some idx / sz / grid convenience methods
+from ._SWSH.idx_arr import *
+from ._SWSH.grid import *

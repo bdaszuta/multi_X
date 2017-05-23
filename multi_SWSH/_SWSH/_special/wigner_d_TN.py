@@ -12,15 +12,16 @@ TN-style algorithm.
 import numpy as _np
 import numba as _nu
 
-_NUM_PREC_REAL = _np.float64
-_INT_PREC = _np.int64
+from ..._types import (_REAL_PREC, _INT_PREC)
+from ..._settings import _JIT_KWARGS
+
 
 # Init. values for recursion
-_INIT_H_INT = 1 / _np.sqrt(_np.array([2], dtype=_NUM_PREC_REAL))
-_INIT_INT = _np.array([1], dtype=_NUM_PREC_REAL)
+_INIT_H_INT = 1 / _np.sqrt(_np.array([2], dtype=_REAL_PREC))
+_INIT_INT = _np.array([1], dtype=_REAL_PREC)
 
 
-@_nu.jit(nopython=True, nogil=True, cache=True)
+@_nu.jit(**_JIT_KWARGS)
 def h_int_Del_Strip(L2):
     '''
     Compute edge strip for half-integer elements up to a maximal 'L'
@@ -30,15 +31,14 @@ def h_int_Del_Strip(L2):
 
     >L2 ~ Twice the maximal 'L' to compute (where L is half-integer)
     '''
-
     L_num = _INT_PREC((L2 + 1) / 2)
-    h_int_strip = _np.zeros(L_num, dtype=_NUM_PREC_REAL)
+    h_int_strip = _np.zeros(L_num, dtype=_REAL_PREC)
 
     # init. val
     h_int_strip[0] = _INIT_H_INT[0]
 
     for l_ind in _np.arange(1, L_num):
-        l = _NUM_PREC_REAL((2 * l_ind + 1) / 2)
+        l = _REAL_PREC((2 * l_ind + 1) / 2)
 
         h_int_strip[l_ind] = _np.sqrt(
             2 * l / (2 * l + 1)) * h_int_strip[l_ind - 1]
@@ -46,7 +46,7 @@ def h_int_Del_Strip(L2):
     return h_int_strip
 
 
-@_nu.jit(nopython=True, nogil=True, cache=True)
+@_nu.jit(**_JIT_KWARGS)
 def h_int_Del_Exterior_full(L2, h_strip):
     '''
     Compute exterior octant for half-integer elements up to a maximal 'L'
@@ -54,11 +54,10 @@ def h_int_Del_Exterior_full(L2, h_strip):
     >L2 ~ Twice the maximal 'L' to compute (where L is half-integer)
     >h_strip ~ edge strip i_nput computed via h_int_Del_Strip
     '''
-
     L_num_ext = _INT_PREC((L2 + 1) * (L2 + 3) / 8)
     L_num_strip = _INT_PREC((L2 + 1) / 2)
 
-    h_int_ext = _np.zeros(L_num_ext, dtype=_NUM_PREC_REAL)
+    h_int_ext = _np.zeros(L_num_ext, dtype=_REAL_PREC)
 
     # init. val
     h_int_ext[0] = _INIT_H_INT[0]
@@ -96,17 +95,16 @@ def h_int_Del_Exterior_full(L2, h_strip):
     return h_int_ext
 
 
-@_nu.jit(nopython=True, nogil=True, cache=True)
+@_nu.jit(**_JIT_KWARGS)
 def h_int_Del_Exterior_tr(L2, h_strip, N2_tr):
     '''
     Truncate del_mn on n index for a maximal N_tr
     (see h_int_Del_Exterior_full)
     '''
-
     L_num_ext = _INT_PREC((3 + 2 * L2 - N2_tr) * (N2_tr + 1) / 8)
     L_num_strip = _INT_PREC((L2 + 1) / 2)
 
-    h_int_ext = _np.zeros(L_num_ext, dtype=_NUM_PREC_REAL)
+    h_int_ext = _np.zeros(L_num_ext, dtype=_REAL_PREC)
 
     # init. val
     h_int_ext[0] = _INIT_H_INT[0]
@@ -189,6 +187,7 @@ def h_int_Del_Exterior_tr(L2, h_strip, N2_tr):
     return h_int_ext
 
 
+@_nu.jit(**_JIT_KWARGS)
 def h_int_Del_Exterior(L2, h_int_strip, N2_tr=None):
     '''
     Handler for exterior (face) truncation
@@ -201,7 +200,7 @@ def h_int_Del_Exterior(L2, h_int_strip, N2_tr=None):
         return h_int_Del_Exterior_tr(L2, h_int_strip, N2_tr)
 
 
-@_nu.jit(nopython=True, nogil=True, cache=True)
+@_nu.jit(**_JIT_KWARGS)
 def h_int_Del_Interior_full(L2, h_ext):
     '''
     Compute interior octant for half-integer elements of fixed 'L'
@@ -213,7 +212,7 @@ def h_int_Del_Interior_full(L2, h_ext):
     L_num_int = _INT_PREC((L2 + 1) * (L2 + 3) / 8)
     L_num_strip = _INT_PREC((L2 + 1) / 2)
 
-    h_int_int = _np.zeros(L_num_int, dtype=_NUM_PREC_REAL)
+    h_int_int = _np.zeros(L_num_int, dtype=_REAL_PREC)
 
     # pre-calculate some re-used factors
     L2fac = L2 * (4 + L2)
@@ -268,7 +267,7 @@ def h_int_Del_Interior_full(L2, h_ext):
     return h_int_int
 
 
-@_nu.jit(nopython=True, nogil=True, cache=True)
+@_nu.jit(**_JIT_KWARGS)
 def h_int_Del_Interior_tr(L2, h_ext_tr, N2_tr):
     '''
     Compute interior octant for half-integer elements of fixed 'L'
@@ -281,7 +280,7 @@ def h_int_Del_Interior_tr(L2, h_ext_tr, N2_tr):
     # we assume that L2>N2_tr else just call the specific routine without
     # truncation.
     L_num_int = _INT_PREC((L2 + 1) * (N2_tr + 1) / 4)
-    h_int_int = _np.zeros(L_num_int, dtype=_NUM_PREC_REAL)
+    h_int_int = _np.zeros(L_num_int, dtype=_REAL_PREC)
 
     # populate the edge values
     for n2 in _np.arange(1, N2_tr + 1, 2):
@@ -323,6 +322,7 @@ def h_int_Del_Interior_tr(L2, h_ext_tr, N2_tr):
     return h_int_int
 
 
+@_nu.jit(**_JIT_KWARGS)
 def h_int_Del_Interior(L2, h_int_ext, N2_tr=None):
     '''
     Handler for exterior (face) truncation
@@ -335,7 +335,7 @@ def h_int_Del_Interior(L2, h_int_ext, N2_tr=None):
         return h_int_Del_Interior_tr(L2, h_int_ext, N2_tr)
 
 
-@_nu.jit(nopython=True, nogil=True, cache=True)
+@_nu.jit(**_JIT_KWARGS)
 def int_Del_Strip(L):
     '''
     Compute edge strip for integer elements up to a maximal 'L'
@@ -345,20 +345,20 @@ def int_Del_Strip(L):
     >L ~ Maximal 'L' to compute
     '''
     L_num = _INT_PREC(L + 1)
-    int_strip = _np.zeros(L_num, dtype=_NUM_PREC_REAL)
+    int_strip = _np.zeros(L_num, dtype=_REAL_PREC)
 
     # init. val
     int_strip[0] = _INIT_INT[0]
 
     for l_ind in _np.arange(1, L_num):
-        l = _NUM_PREC_REAL(l_ind)
+        l = _REAL_PREC(l_ind)
         int_strip[l_ind] = _np.sqrt(
             (2 * l - 1) / (2 * l)) * int_strip[l_ind - 1]
 
     return int_strip
 
 
-@_nu.jit(nopython=True, nogil=True, cache=True)
+@_nu.jit(**_JIT_KWARGS)
 def int_Del_Exterior_full(L, int_strip):
     '''
     Compute exterior octant for integer elements up to a maximal 'L'
@@ -369,7 +369,7 @@ def int_Del_Exterior_full(L, int_strip):
     L_num_ext = _INT_PREC((L + 1) * (L + 2) / 2)
     L_num_strip = _INT_PREC(L + 1)
 
-    int_ext = _np.zeros(L_num_ext, dtype=_NUM_PREC_REAL)
+    int_ext = _np.zeros(L_num_ext, dtype=_REAL_PREC)
 
     # init. val
     int_ext[0] = _INIT_INT[0]
@@ -395,7 +395,7 @@ def int_Del_Exterior_full(L, int_strip):
     return int_ext
 
 
-@_nu.jit(nopython=True, nogil=True, cache=True)
+@_nu.jit(**_JIT_KWARGS)
 def int_Del_Exterior_tr(L, int_strip, N_tr):
     '''
     Truncate del_mn on n index for a maximal N_tr (see int_Del_Exterior_full)
@@ -403,7 +403,7 @@ def int_Del_Exterior_tr(L, int_strip, N_tr):
     L_num_ext = _INT_PREC((2 + 2 * L - N_tr) * (N_tr + 1) / 2)
     L_num_strip = _INT_PREC(L + 1)
 
-    int_ext = _np.zeros(L_num_ext, dtype=_NUM_PREC_REAL)
+    int_ext = _np.zeros(L_num_ext, dtype=_REAL_PREC)
 
     # init. val
     int_ext[0] = _INIT_INT[0]
@@ -457,7 +457,7 @@ def int_Del_Exterior_tr(L, int_strip, N_tr):
     return int_ext
 
 
-@_nu.jit(nopython=True, nogil=True, cache=True)
+@_nu.jit(**_JIT_KWARGS)
 def int_Del_Exterior(L, int_strip, N_tr=-1):
     '''
     Handler for exterior (face) truncation
@@ -470,7 +470,7 @@ def int_Del_Exterior(L, int_strip, N_tr=-1):
     return int_Del_Exterior_tr(L, int_strip, N_tr)
 
 
-@_nu.jit(nopython=True, nogil=True, cache=True)
+@_nu.jit(**_JIT_KWARGS)
 def int_Del_Interior_full(L, int_ext):
     '''
     Compute interior octant for integer elements of fixed 'L'
@@ -480,7 +480,7 @@ def int_Del_Interior_full(L, int_ext):
     '''
     L_num_int = _INT_PREC(((L + 2) * (L + 1)) / 2)
 
-    int_int = _np.zeros(L_num_int, dtype=_NUM_PREC_REAL)
+    int_int = _np.zeros(L_num_int, dtype=_REAL_PREC)
 
     # populate the edge values
     for n_ind in _np.arange(0, L + 1):
@@ -513,7 +513,7 @@ def int_Del_Interior_full(L, int_ext):
     return int_int
 
 
-@_nu.jit(nopython=True, nogil=True, cache=True)
+@_nu.jit(**_JIT_KWARGS)
 def int_Del_Interior_tr(L, int_ext_tr, N_tr):
     '''
     Compute interior octant for integer elements of fixed 'L'
@@ -526,7 +526,7 @@ def int_Del_Interior_tr(L, int_ext_tr, N_tr):
     # we assume that L>N_tr else just call the specific routine without
     # truncation.
     L_num_int = _INT_PREC((L + 1) * (N_tr + 1))
-    int_int = _np.zeros(L_num_int, dtype=_NUM_PREC_REAL)
+    int_int = _np.zeros(L_num_int, dtype=_REAL_PREC)
 
     # populate the edge values
     for n_ind in _np.arange(0, N_tr + 1):
@@ -561,7 +561,7 @@ def int_Del_Interior_tr(L, int_ext_tr, N_tr):
     return int_int
 
 
-@_nu.jit(nopython=True, nogil=True, cache=True)
+@_nu.jit(**_JIT_KWARGS)
 def int_Del_Interior(L, int_ext, N_tr=-1):
     '''
     Handler for exterior (face) truncation
@@ -574,12 +574,13 @@ def int_Del_Interior(L, int_ext, N_tr=-1):
         return int_Del_Interior_tr(L, int_ext, N_tr)
 
 
-@_nu.jit(nopython=True, nogil=True, cache=True)
+@_nu.jit(**_JIT_KWARGS)
 def _int_Del_Interior_ExtendQuad(l, cur_oct):
     '''
     Extend octant to quadrant using symmetries
     '''
-    int_int_quad = _np.zeros((l + 1, l + 1), dtype=_NUM_PREC_REAL)
+    l = _INT_PREC(l)
+    int_int_quad = _np.zeros((l + 1, l + 1), dtype=_REAL_PREC)
 
     # extract internal values
     l_fac = l * (3 + l)
@@ -601,17 +602,18 @@ def _int_Del_Interior_ExtendQuad(l, cur_oct):
     return int_int_quad
 
 
-@_nu.jit(nopython=True, nogil=True, cache=True)
+@_nu.jit(**_JIT_KWARGS)
 def int_Del_Interior_ExtendQuad(l, cur_oct, N_ph=-1):
     '''
     Interface that enables truncation.
     '''
+    l = _INT_PREC(l)
     if N_ph == -1:
         return _int_Del_Interior_ExtendQuad(l, cur_oct)
     elif N_ph >= l:
         return _int_Del_Interior_ExtendQuad(l, cur_oct)
 
-    del_ret = _np.zeros((l + 1, N_ph + 1), dtype=_NUM_PREC_REAL)
+    del_ret = _np.zeros((l + 1, N_ph + 1), dtype=_REAL_PREC)
 
     for i in _np.arange(0, l + 1):
         for j in _np.arange(0, N_ph + 1):
@@ -620,12 +622,12 @@ def int_Del_Interior_ExtendQuad(l, cur_oct, N_ph=-1):
     return del_ret
 
 
-@_nu.jit(nopython=True, nogil=True, cache=True)
+@_nu.jit(**_JIT_KWARGS)
 def int_Del_Interior_ExtendFull(l, cur_oct):
     '''
     Extend octant to full slab using symmetries
     '''
-    int_int_full = _np.zeros((2 * l + 1, 2 * l + 1), dtype=_NUM_PREC_REAL)
+    int_int_full = _np.zeros((2 * l + 1, 2 * l + 1), dtype=_REAL_PREC)
 
     # Extract internal values
     l_fac = l * (3 + l)
@@ -660,13 +662,13 @@ def int_Del_Interior_ExtendFull(l, cur_oct):
     return int_int_full
 
 
-@_nu.jit(nopython=True, nogil=True, cache=True)
+@_nu.jit(**_JIT_KWARGS)
 def _h_int_Del_Interior_ExtendQuad(l2, cur_oct):
     '''
     Extend octant to quadrant using symmetries
     '''
     dim = _INT_PREC(_np.sqrt(1 / 4 + l2 / 2 * (l2 / 2 + 1)))
-    h_int_int_quad = _np.zeros((dim, dim), dtype=_NUM_PREC_REAL)
+    h_int_int_quad = _np.zeros((dim, dim), dtype=_REAL_PREC)
 
     # use symmetries to populate interior
     for n in _np.arange(1, l2 + 2, 2):

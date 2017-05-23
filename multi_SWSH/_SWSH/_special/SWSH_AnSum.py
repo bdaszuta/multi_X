@@ -10,7 +10,6 @@
 import numpy as _np
 
 from . import wigner_d_AnSum
-wigner_d_AnSum
 
 
 def sylm(s, l, m, theta, phi):

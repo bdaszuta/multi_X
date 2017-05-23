@@ -8,7 +8,8 @@
 @function: Periodic extension mechanism for spin-weighted functions.
 """
 import numpy as _np
-_INT_PREC = _np.int64
+
+from ..._types import _INT_PREC
 
 
 def int_funcExtension(s, sw_fun):
