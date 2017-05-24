@@ -5,6 +5,7 @@
 __pycache__
 _data
 _ignore
+doc
 
 # cache etc
 .cache

@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
  ,-*
 (_) Created on Tue Jan  5 22:52:50 2016
@@ -16,10 +14,10 @@ import numba as _nu
 import joblib as jl
 
 
-from . import interface_Fourier_series
-from .._special import wigner_d_TN
-from ..._types import (_COMPLEX_PREC, _INT_PREC)
-from ..._settings import _JIT_KWARGS
+from multi_SWSH._SWSH import interface_Fourier_series
+from multi_SWSH._SWSH._special import wigner_d_TN
+from multi_SWSH._types import (_COMPLEX_PREC, _INT_PREC)
+from multi_SWSH._settings import _JIT_KWARGS
 
 
 # Fourier object instance
@@ -826,9 +824,6 @@ def main():
     #J_mn = int_J_mn(s_arr, salm_arr, N_th, N_ph)
 
     sf = int_sf(s_arr, salm_arr, N_th, N_ph)
-
-if __name__ == '__main__':
-    main()
 
 #
 # :D

@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
  ,-*
 (_) Created on Thu Dec 26 17:19:17 2013
@@ -9,7 +7,7 @@
 """
 import numpy as _np
 
-from . import wigner_d_AnSum
+from multi_SWSH._SWSH._special import wigner_d_AnSum
 
 
 def sylm(s, l, m, theta, phi):
@@ -38,9 +36,6 @@ def sylm(s, l, m, theta, phi):
 def _main():
     retval = sylm(1/2, 1/2, 1/2, [0, 2, 3], [0, 1])
     print(retval)
-
-if __name__ == '__main__':
-    _main()
 
 #
 # :D

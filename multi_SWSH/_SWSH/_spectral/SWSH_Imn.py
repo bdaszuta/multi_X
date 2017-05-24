@@ -9,9 +9,8 @@
 """
 import numpy as _np
 
-from . import SWSH_periodic_extension
-from ..._types import (_COMPLEX_PREC, _INT_PREC)
-
+from multi_SWSH._SWSH import SWSH_periodic_extension
+from multi_SWSH._types import (_INT_PREC, _COMPLEX_PREC)
 
 # Fourier object instance
 FSi = None
@@ -214,9 +213,6 @@ def _main():
     # h = FSi.fftshift(h_I_mn)[1::2,1::2]
     # h = h[1:-1,:]
     # h = FSi.fftshift(h_I_mn)[5::2,1::2]
-
-if __name__ == '__main__':
-    _main()
 
 #
 # :D

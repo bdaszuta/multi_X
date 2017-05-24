@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
  ,-*
 (_) Created on <Tue May 23 2017> @ 08:11:23
@@ -9,11 +7,12 @@
 see read.nfo.
 """
 import numpy as _np
-import numba as _nu
+# import numba as _nu
 
-from . import (_SWSH, _types)
-from ._SWSH.random_coefficients import (_int_gen_rand_salm,
-                                        _h_int_gen_rand_salm)
+from multi_SWSH import (_SWSH, _types)
+from multi_SWSH._SWSH.random_coefficients import (_int_gen_rand_salm,
+                                                  _h_int_gen_rand_salm)
+
 
 def _int_salm(s_arr, f_arr):
     # Compute salm from integer spin-weighted functions sampled on S2

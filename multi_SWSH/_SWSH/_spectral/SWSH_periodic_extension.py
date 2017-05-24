@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
  ,-*
 (_) Created on Sat Dec 19 15:36:55 2015
@@ -9,7 +7,7 @@
 """
 import numpy as _np
 
-from ..._types import _INT_PREC
+from multi_SWSH._types import _INT_PREC
 
 
 def int_funcExtension(s, sw_fun):
@@ -150,9 +148,6 @@ def _main():
 
     # Check difference in extension and full analytical specification on torus
     diff_h_int_ext = _np.max(_np.abs(h_int_fun_N_ext - h_int_fun_N))
-
-if __name__ == '__main__':
-    _main()
 
 #
 # :D

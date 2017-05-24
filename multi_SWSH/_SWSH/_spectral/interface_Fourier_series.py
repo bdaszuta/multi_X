@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
  ,-*
 (_) Created on Fri Oct 23 14:28:36 2015
@@ -341,9 +339,6 @@ def _main():
     dat = _np.array(_np.random.rand(1000, 1000), dtype=_np.complex128)
     FS = lambda use_cache: FourierSeries(use_cache=use_cache)
     return FS(False)(dat), FS(True)(dat)
-
-if __name__ == '__main__':
-    out, out_c = _main()
 
 #
 # :D

@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
  ,-*
 (_) Created on Thu Dec 17 21:40:18 2015
@@ -12,9 +10,8 @@ TN-style algorithm.
 import numpy as _np
 import numba as _nu
 
-from ..._types import (_REAL_PREC, _INT_PREC)
-from ..._settings import _JIT_KWARGS
-
+from multi_SWSH._settings import _JIT_KWARGS
+from multi_SWSH._types import (_REAL_PREC, _INT_PREC)
 
 # Init. values for recursion
 _INIT_H_INT = 1 / _np.sqrt(_np.array([2], dtype=_REAL_PREC))
@@ -744,9 +741,6 @@ def _main():
     h_int_Del_int = h_int_Del_Interior(L2, h_int_Del_ext)
 
     h_quad = h_int_Del_Interior_ExtendQuad(L2, h_int_Del_int)
-
-if __name__ == '__main__':
-    _main()
 
 
 #

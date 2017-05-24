@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
  ,-*
 (_) Created on <Tue May 23 2017> @ 14:20:20
@@ -13,8 +11,8 @@ import numba as _nu
 import numpy as _np
 import fastcache as _fc
 
-from ..._types import (_INT_PREC, _REAL_PREC)
-from ..._settings import (_JIT_KWARGS, _FC_KWARGS)
+from multi_SWSH._types import (_INT_PREC, _REAL_PREC)
+from multi_SWSH._settings import (_JIT_KWARGS, _FC_KWARGS)
 
 
 @_fc.clru_cache(**_FC_KWARGS)

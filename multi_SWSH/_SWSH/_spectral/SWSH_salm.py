@@ -8,10 +8,10 @@
 import numpy as _np
 import numba as _nu
 
-from . import SWSH_Imn
-from .._special import wigner_d_TN
-from ..._types import (_COMPLEX_PREC, _INT_PREC)
-from ..._settings import _JIT_KWARGS
+from multi_SWSH._SWSH._spectral import SWSH_Imn
+from multi_SWSH._SWSH._special import wigner_d_TN
+from multi_SWSH._types import (_COMPLEX_PREC, _INT_PREC)
+from multi_SWSH._settings import _JIT_KWARGS
 
 
 @_nu.jit(**_JIT_KWARGS)

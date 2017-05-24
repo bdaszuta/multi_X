@@ -1,19 +1,19 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
  ,-*
 (_) Created on <Tue May 23 2017> @ 14:20:20
 
 @author: Boris Daszuta
-@function: Convenience functions for populating coefficients with random entries
-for testing.
+@function: Convenience functions for populating coefficients with random
+entries for testing.
 """
 import numba as _nu
 import numpy as _np
 
-from .._types import _INT_PREC
+from multi_SWSH._types import _INT_PREC
+from multi_SWSH._settings import _JIT_KWARGS
 
-@_nu.jit(nopython=True, nogil=True, cache=True)
+
+@_nu.jit(**_JIT_KWARGS)
 def _int_strip_tr(num_fun_i, s_arr_i, L_r_th_i, L_r_ph_i, L_th_tr, salm_i):
     # Strip values that should be zero based on truncation
     for f in _np.arange(0, num_fun_i):
@@ -44,7 +44,7 @@ def _int_strip_tr(num_fun_i, s_arr_i, L_r_th_i, L_r_ph_i, L_th_tr, salm_i):
                 salm_i[f, ind_lm] = 0
 
 
-@_nu.jit(nopython=True, nogil=True, cache=True)
+@_nu.jit(**_JIT_KWARGS)
 def _int_gen_rand_salm(s_arr, L_r_th, L_r_ph, L_th_tr):
     # Generate test coefficients with (uniform-random) entries in:
     # re(salm)\in[-1,1] /\ im(salm)\in[-1,1]
@@ -69,7 +69,7 @@ def _int_gen_rand_salm(s_arr, L_r_th, L_r_ph, L_th_tr):
     return salm
 
 
-@_nu.jit(nopython=True, nogil=True, cache=True)
+@_nu.jit(**_JIT_KWARGS)
 def _h_int_strip_tr(num_fun_i, s_arr_i,
                     L2_r_th_i, L2_r_ph_i, L2_th_tr, h_salm_i):
     # Strip values that should be zero based on truncation
@@ -106,7 +106,7 @@ def _h_int_strip_tr(num_fun_i, s_arr_i,
                 h_salm_i[f, ind_lm] = 0
 
 
-@_nu.jit(nopython=True, nogil=True, cache=True)
+@_nu.jit(**_JIT_KWARGS)
 def _h_int_gen_rand_salm(s_arr, L_r_th, L_r_ph, L_th_tr):
     # Generate test coefficients with (uniform-random) entries in:
     # re(salm)\in[-1,1] /\ im(salm)\in[-1,1]
@@ -135,7 +135,6 @@ def _h_int_gen_rand_salm(s_arr, L_r_th, L_r_ph, L_th_tr):
 
     _h_int_strip_tr(num_fun, s_arr, L2_r_th, L2_r_ph, L2_th_tr, h_salm)
     return h_salm
-
 
 #
 # :D

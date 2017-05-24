@@ -1,23 +1,22 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
  ,-*
 (_) Created on <Tue May 23 2017> @ 14:20:20
 
 @author: Boris Daszuta
-@function: Convenience functions for calculation of array sizes based on desired
-band-limit and conversions between 1d array idxs and (l, m) type indices.
+@function: Convenience functions for calculation of array sizes based on
+desired band-limit and conversions between 1d array idxs and (l, m) type
+indices.
 """
-import numpy as _np
+# import numpy as _np
 import numba as _nu
 
-from .._types import _INT_PREC
-from .._settings import _JIT_KWARGS
+from multi_SWSH._types import _INT_PREC
+from multi_SWSH._settings import _JIT_KWARGS
 
 
 def arr_idx_map(l=None, m=None, is_half_integer=True):
     '''
-    Map a pair (l, m) to a one-dimensional array index.
+    Map a pair (`l`, `m`) to a one-dimensional array index.
 
     Parameters
     ----------
@@ -114,6 +113,11 @@ def N_to_L(N_th=None, N_ph=None, is_half_integer=True):
     Returns
     -------
     tuple : (L_th, L_ph)
+
+    Examples
+    --------
+    >>> N_to_L(11, 11, is_half_integer=True)
+    (10, 10)
     '''
     if is_half_integer:
         return (N_th - 1), (N_ph - 1)

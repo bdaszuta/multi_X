@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
  ,-*
 (_) Created on Thu Dec 26 17:20:15 2013
@@ -83,7 +81,6 @@ def wigner_d_an(l, m, n, theta):
     theta = _np.tile(theta, (r_sz, 1))
     r = _np.tile(r.reshape((r_sz, 1)), (1, theta_sz))
     return _np.sum(va * trigf, 0)
-
 
 #
 # :D

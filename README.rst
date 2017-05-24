@@ -25,12 +25,14 @@ pytest & (non-python inotify for auto_run_test.sh)
 For the explatoratory (see examples):
 matplotlib
 
+To build docs:
+numpydoc & sphinx
 
 How do I use this?
 ------------------
 import multi_SWSH as ms
 
-See also example_*.py
+See also the examples folder.
 
 
 TODO [in order, roughly]:

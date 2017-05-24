@@ -98,7 +98,7 @@ def int_ex():
     '''
     Integer eth test; here we work as above but with far less detail.
     '''
-    L_th, L_ph = 32, 32
+    L_th, L_ph = 8, 8
     th, ph = ms.build_grid(L_th=L_th, L_ph=L_ph, is_half_integer=False)
     (th, ph) = (th[:, None], ph[None, :])
     # broadcast
@@ -137,8 +137,6 @@ def int_ex():
 
     print('@ max|n_eth_p_alm - an_eth_p_alm| = {}'.format(
         max(abs(n_eth_p_alm - an_eth_p_alm))))
-    import pdb
-    pdb.set_trace()
 
 if __name__ == '__main__':
     h_int_ex()

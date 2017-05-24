@@ -1,8 +1,9 @@
-from . import _SWSH
-from ._SWSH._spectral.SWSH_eth import (eth_build, )
-from ._interface import (sf_to_salm, salm_to_sf, generate_random_salm)
-from ._types import *
+from multi_SWSH import _SWSH
+from multi_SWSH._SWSH._spectral.SWSH_eth import (eth_build, )
+from multi_SWSH._interface import (sf_to_salm, salm_to_sf,
+                                   generate_random_salm)
+from multi_SWSH._types import *
 
 # provide some idx / sz / grid convenience methods
-from ._SWSH.idx_arr import *
-from ._SWSH.grid import *
+from multi_SWSH._SWSH.idx_arr import *
+from multi_SWSH._SWSH.grid import *

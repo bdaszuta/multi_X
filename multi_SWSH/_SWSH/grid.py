@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
  ,-*
 (_) Created on <Tue May 23 2017> @ 14:20:20
@@ -9,10 +7,10 @@
 supplied band-limit.
 """
 import numpy as _np
-import numba as _nu
+# import numba as _nu
 
-from .idx_arr import L_to_N
-from .._settings import _JIT_KWARGS
+from multi_SWSH._SWSH.idx_arr import L_to_N
+# from multi_SWSH._settings import _JIT_KWARGS
 
 
 # @_nu.jit(**_JIT_KWARGS)

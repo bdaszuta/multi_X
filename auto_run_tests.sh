@@ -37,8 +37,9 @@ do
 	sleep 1  # allow oper. completion
 
         # run unit tests
-        cd $TESTING_DIR
-	python $BASE_FILENAME
-        cd ..
+        # cd $TESTING_DIR
+        pytest
+	# python $BASE_FILENAME
+        # cd ..
     done
 done
