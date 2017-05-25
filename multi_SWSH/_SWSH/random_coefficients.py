@@ -48,6 +48,8 @@ def _int_strip_tr(num_fun_i, s_arr_i, L_r_th_i, L_r_ph_i, L_th_tr, salm_i):
 def _int_gen_rand_salm(s_arr, L_r_th, L_r_ph, L_th_tr):
     # Generate test coefficients with (uniform-random) entries in:
     # re(salm)\in[-1,1] /\ im(salm)\in[-1,1]
+    if L_r_ph is None:
+        L_r_ph = L_r_th
 
     if L_th_tr is None:
         L_th_tr = L_r_th
@@ -110,6 +112,9 @@ def _h_int_strip_tr(num_fun_i, s_arr_i,
 def _h_int_gen_rand_salm(s_arr, L_r_th, L_r_ph, L_th_tr):
     # Generate test coefficients with (uniform-random) entries in:
     # re(salm)\in[-1,1] /\ im(salm)\in[-1,1]
+
+    if L_r_ph is None:
+        L_r_ph = L_r_th
 
     if L_th_tr is None:
         L_th_tr = L_r_th

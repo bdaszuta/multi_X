@@ -82,10 +82,11 @@ def generate_random_salm(s=None, L_th=None, L_ph=None, L_th_pad=None,
         Band-limit (in th) to use.
 
     L_ph = None : int
-        Band-limit (in ph) to use.
+        (Optional) band-limit (in ph) to use.
 
-    L_th_pad = None : int (optional)
-        Control whether the values are padded to some higher band-limit.
+    L_th_pad = None : int
+        (Optional) Control whether the values are padded to some higher
+        band-limit.
 
     is_half_integer = True : bool
         Control whether arrays are constructed that correspond to (half)

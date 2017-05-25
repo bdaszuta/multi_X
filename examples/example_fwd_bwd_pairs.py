@@ -44,7 +44,6 @@ I_err = max(abs(I_rand_salm - I_salm), axis=1)
 # to a function pass -3 and 7.
 ###############################################################################
 HI_s = array([-3, 1, 7])   # note: spin-weights
-HI_s = array([-3,])
 HI_L_th, HI_L_ph = 37, 11  # resolutions do not need to be equal
 
 # infer what would be the number of samples using band-limits

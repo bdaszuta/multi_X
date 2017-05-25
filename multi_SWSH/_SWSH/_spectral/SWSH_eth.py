@@ -17,7 +17,7 @@ from multi_SWSH._settings import (_JIT_KWARGS, _FC_KWARGS)
 
 @_fc.clru_cache(**_FC_KWARGS)
 @_nu.jit(**_JIT_KWARGS)
-def eth_build(s=None, L=None, type=-1, is_half_integer=True):
+def eth_build(s=None, L=None, type=-1, is_dense=True, is_half_integer=True):
     '''
     Construct representation of eth operator in coefficient space.
 
@@ -31,6 +31,11 @@ def eth_build(s=None, L=None, type=-1, is_half_integer=True):
 
     type = -1 : -1 (or +1)
         Control whether raising or lowering operator is being constructed.
+
+    is_dense = True : bool
+        Control whether operator is constructed in a dense fashion; that is,
+        whether output is compatible with direct dot product application over
+        a field of appropriate spin-weight and band-limit.
 
     is_half_integer = True : bool
         Control whether values are constructed that correspond to (half)
@@ -69,6 +74,14 @@ def eth_build(s=None, L=None, type=-1, is_half_integer=True):
                     eth_op[idx] = -_np.sqrt((l - s) * (l + s + 1))
 
     return eth_op
+
+
+def eth_apply(salm=None, eth_lm=None,
+              s=None, L=None, type=-1, is_dense=True, is_half_integer=True):
+    '''
+    Application of (previously generated) operator to spin-weighted fields..
+    '''
+    return eth_lm * salm
 
 #
 # :D
