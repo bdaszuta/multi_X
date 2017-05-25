@@ -70,8 +70,12 @@ def _h_int_sf(h_s_arr, h_salm_arr, h_N_th, h_N_ph):
 def generate_random_salm(s=None, L_th=None, L_ph=None, L_th_pad=None,
                          is_half_integer=True):
     '''
-    Convenience function for construction of (uniform) random salm coefficients
-    with entries in re(salm)\in[-1,1] /\ im(salm)\in[-1,1] for testing.
+    Convenience function for construction of (uniform) random coefficients
+    with:
+
+    .. math::
+
+        \mathfrak{R}({}_sa_{lm}),\, \mathfrak{I}({}_sa_{lm}) \in [-1,\,1]
 
     Parameters
     ----------
@@ -79,10 +83,10 @@ def generate_random_salm(s=None, L_th=None, L_ph=None, L_th_pad=None,
         Spin-weights to construct arrays for.
 
     L_th = None : int
-        Band-limit (in th) to use.
+        Band-limit (in :math:`\\vartheta`) to use.
 
     L_ph = None : int
-        (Optional) band-limit (in ph) to use.
+        (Optional) band-limit (in :math:`\\varphi`) to use.
 
     L_th_pad = None : int
         (Optional) Control whether the values are padded to some higher
@@ -94,7 +98,7 @@ def generate_random_salm(s=None, L_th=None, L_ph=None, L_th_pad=None,
 
     Returns
     -------
-    Stacked array (first dimension controlled by 's' as described above) of
+    Stacked array (first dimension controlled by `s` as described above) of
     random values.
     '''
     s = _np.array(s)

@@ -55,7 +55,7 @@ def sys_Dirac_S2(t, psi_lm, **kwargs):
     return array([-1j * mu * psi_lm[0, :] - eth_psi_lm[1, :],
                   +1j * mu * psi_lm[1, :] - eth_psi_lm[0, :]])
 
-    
+
 def sys_Dirac_S2_post_step_fcn(t, psi_lm, **kwargs):
     '''
     Function to call after each Runge-Kutta step. Here we calculate the charge
@@ -101,11 +101,11 @@ def evolve_RK4(ti, tf, N_t, z_ini, sys_fcn=None, sys_post_step_fcn=None,
 ###############################################################################
 # specify parameters and initial data
 ###############################################################################
-L = 7             # band-limit (th=ph)
+L = 33            # band-limit (th=ph)
 mu = 1.2          # mass parameter
 ti, tf = 0, 100   # initial and final times
 t_idx_key = 32    # control frequency of when 'Q' is computed
-N_t = 1000        # total number of time-steps (dt inferred)
+N_t = 10000       # total number of time-steps (dt inferred)
 
 # generate an initial Dirac field in coefficient space
 psi_lm_ini = ms.generate_random_salm(s=array([-1, 1]), L_th=L,

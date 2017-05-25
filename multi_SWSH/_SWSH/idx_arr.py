@@ -7,7 +7,6 @@
 desired band-limit and conversions between 1d array idxs and (l, m) type
 indices.
 """
-# import numpy as _np
 import numba as _nu
 
 from multi_SWSH._types import _INT_PREC
@@ -59,7 +58,6 @@ def arr_sz_calc(L=None, is_half_integer=True):
     # calculate the required size of an array based on band-limit
     if is_half_integer:
         return _INT_PREC(3 / 4 + (L / 2) * (2 + L / 2))
-
     return (L + 1) ** 2
 
 
@@ -84,6 +82,10 @@ def L_to_N(L_th=None, L_ph=None, is_half_integer=True):
     Returns
     -------
     tuple : (N_th, N_ph)
+
+    See also
+    --------
+    N_to_L : opposite direction.
     '''
     if is_half_integer:
         L_th, L_ph = L_th / 2, L_ph / 2
@@ -118,6 +120,10 @@ def N_to_L(N_th=None, N_ph=None, is_half_integer=True):
     --------
     >>> N_to_L(11, 11, is_half_integer=True)
     (10, 10)
+
+    See also
+    --------
+    L_to_N : opposite direction.
     '''
     if is_half_integer:
         return (N_th - 1), (N_ph - 1)

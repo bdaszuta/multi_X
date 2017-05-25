@@ -7,14 +7,15 @@
 supplied band-limit.
 """
 import numpy as _np
-# import numba as _nu
+import numba as _nu
 
 from multi_SWSH._SWSH.idx_arr import L_to_N
-# from multi_SWSH._settings import _JIT_KWARGS
+from multi_SWSH._settings import _JIT_KWARGS
 
 
-# @_nu.jit(**_JIT_KWARGS)
-def build_grid(L_th=None, L_ph=None, is_half_integer=True, extended=False):
+@_nu.jit(**_JIT_KWARGS)
+def build_grid(L_th=None, L_ph=None, is_half_integer=True, is_extended=False,
+               is_double_extension=False):
     '''
     Construct 'th', 'ph' one dimensional grids with optional extension from S2.
     '''
@@ -29,7 +30,10 @@ def build_grid(L_th=None, L_ph=None, is_half_integer=True, extended=False):
         h_int_th = _np.pi / (N_th - 1) * _np.arange(0, (N_th_EE - 1) + 1)
         h_int_ph = 2 * _np.pi / N_ph * _np.arange(0, N_ph_E)
 
-        if extended:
+        if is_extended:
+            if is_double_extension:
+                return (_np.hstack((h_int_th, h_int_th + 4 * _np.pi)),
+                        _np.hstack((h_int_ph, h_int_ph + 4 * _np.pi)))
             return h_int_th, h_int_ph
 
         return h_int_th[:N_th], h_int_ph[:N_ph]
@@ -41,7 +45,10 @@ def build_grid(L_th=None, L_ph=None, is_half_integer=True, extended=False):
     int_th = _np.pi / (N_th - 1) * _np.arange(0, (N_th_E))
     int_ph = 2 * _np.pi / N_ph * _np.arange(0, (N_ph - 1) + 1)
 
-    if extended:
+    if is_extended:
+        if is_double_extension:
+            return (_np.hstack((int_th, int_th + 2 * _np.pi)),
+                    _np.hstack((int_ph, int_ph + 2 * _np.pi)))
         return int_th, int_ph
     return int_th[:N_th], int_ph[:N_ph]
 

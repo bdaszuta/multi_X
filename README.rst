@@ -1,49 +1,71 @@
-What is this?
--------------
-A clean, minimal implementation of the SWSH transformation described in [1, 2]
-for (half) integer fields providing the nodal <-> modal map:
-${}_s f \Longleftrightarrow {}_s a_{lm}$.
+multi_X_SWSH
+============
+**multi_X_SWSH** is a clean, minimal implementation of the spin-weighted
+spherical harmonic transformation for (half) integer spin-weighted fields on
+:math:`\mathbb{S}^2` (see :ref:`references` for conventions and
+definitions). The complexity scales as :math:`\mathcal{O}(L^3)` where :math:`L`
+is the band-limit.
 
-References:
-[1] Beyer, Florian, Boris Daszuta, and Jörg Frauendiener.
-    "A spectral method for half-integer spin fields based on spin-weighted
-     spherical harmonics."
-    Classical and Quantum Gravity 32, no. 17 (2015): 175013.
-[2] Beyer, Florian, Boris Daszuta, Jörg Frauendiener, and Ben Whale.
-    "Numerical evolutions of fields on the 2-sphere using a spectral method
-    based on spin-weighted spherical harmonics."
-    Classical and Quantum Gravity 31, no. 7 (2014): 075019.
+In particular ``multi_X_SWSH.sf_to_salm`` provides:
 
+.. math::
+   :nowrap:
 
-What is requried?
------------------
-fastcache, numba, numpy, pyfftw and joblib;
+   \begin{equation}
+      \begin{aligned}
+      \mathcal{F}:{}_s f(\vartheta,\,\varphi) \mapsto {}_sa_{lm},
+      \end{aligned}
+   \end{equation}
 
-For the careful:
-pytest & (non-python inotify for auto_run_test.sh)
+together with ``multi_X_SWSH.salm_to_sf`` implementing:
 
-For the explatoratory (see examples):
-matplotlib
+.. math::
+   :nowrap:
 
-To build docs:
-numpydoc & sphinx
+   \begin{equation}
+      \begin{aligned}
+      \mathcal{F}^{-1}: {}_sa_{lm} \mapsto {}_s f(\vartheta,\,\varphi).
+      \end{aligned}
+   \end{equation}
+
 
 How do I use this?
 ------------------
-import multi_SWSH as ms
+ import multi_SWSH as ms
 
-See also the examples folder.
+See also :ref:`examples` for a few use cases and :ref:`function_listing`.
 
 
-TODO [in order, roughly]:
--------------------------
-(*) Add a trivial Dirac example from the other codebase.
-(*) Clean up docstrings and provide prototype '>>>'
-(*) Expose construction of analytical sYlm & Wigner_d etc.
-(*) The internal _INT_PREC conversion for half-integer should be tidier.
-(*) Joblib can probably be removed in favour of threads + jit nogil.
-(*) Complete tests (together with doctests)
-(*) Compact passed data when using (L_th > L_ph) \/ (L_th_pad != L_th)
-(*) The whole thing could be wrapped into a single, (JIT) compiled function.
-(*) Allow for a T2 without truncation.
-(*) Make this into a fully fledged package and release it... maybe ;)
+Code technology
+---------------
+... ``pyfftw``, ``numba``
+
+.. _references:
+
+References
+----------
+
+Florian Beyer, Boris Daszuta, Jörg Frauendiener, and Ben Whale.
+*Numerical evolutions of fields on the 2-sphere using a spectral method based on
+spin-weighted spherical harmonics*. Classical and Quantum Gravity,
+31(7):075019, 2014.
+`arXiv (1308.4729) <https://arxiv.org/abs/1308.4729>`_
+
+Florian Beyer, Boris Daszuta, and Jörg Frauendiener.  *A spectral method for
+half-integer spin fields based on spin-weighted spherical harmonics*. Classical
+and Quantum Gravity, 32(17):175013, 2015.
+`arXiv (1502.07427) <https://arxiv.org/abs/1502.07427>`_
+
+
+
+TODO [in order, roughly]
+------------------------
+* Clean up eth.
+* Clean up docstrings and provide prototype '>>>'
+* Expose construction of analytical sYlm & Wigner_d etc.
+* The internal _INT_PREC conversion for half-integer should be tidier.
+* Joblib can probably be removed in favour of threads + jit nogil.
+* Complete tests (together with doctests)
+* Compact passed data when using (L_th > L_ph) \/ (L_th_pad != L_th)
+* The whole thing could be wrapped into a single, (JIT) compiled function.
+* Allow for a T2 without truncation.
