@@ -14,10 +14,10 @@ import numba as _nu
 import joblib as jl
 
 
-from multi_SWSH._SWSH import interface_Fourier_series
-from multi_SWSH._SWSH._special import wigner_d_TN
-from multi_SWSH._types import (_COMPLEX_PREC, _INT_PREC)
-from multi_SWSH._settings import _JIT_KWARGS
+from multi_X_SWSH._SWSH import interface_Fourier_series
+from multi_X_SWSH._SWSH._special import wigner_d_TN
+from multi_X_SWSH._types import (_COMPLEX_PREC, _INT_PREC)
+from multi_X_SWSH._settings import _JIT_KWARGS
 
 
 # Fourier object instance

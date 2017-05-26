@@ -8,10 +8,10 @@
 import numpy as _np
 import numba as _nu
 
-from multi_SWSH._SWSH._spectral import SWSH_Imn
-from multi_SWSH._SWSH._special import wigner_d_TN
-from multi_SWSH._types import (_COMPLEX_PREC, _INT_PREC)
-from multi_SWSH._settings import _JIT_KWARGS
+from multi_X_SWSH._SWSH._spectral import SWSH_Imn
+from multi_X_SWSH._SWSH._special import wigner_d_TN
+from multi_X_SWSH._types import (_COMPLEX_PREC, _REAL_PREC, _INT_PREC)
+from multi_X_SWSH._settings import _JIT_KWARGS
 
 
 @_nu.jit(**_JIT_KWARGS)
@@ -287,8 +287,8 @@ def h_int_salm(s_arr, f_arr):
 
     for f in _np.arange(num_fun):
         # compute phase
-        pwr_v = _INT_PREC(_np.arange(-n_ma, n_ma + 1, 2) / 2 + s_arr[f])
-        I_mn_ph = -_np.array([(-1)**pwr_v])
+        pwr_v = _REAL_PREC(_np.arange(-n_ma, n_ma + 1, 2) / 2 + s_arr[f])
+        I_mn_ph = -_np.array([(-1) ** pwr_v])
 
         I_mn_ph = _np.repeat(I_mn_ph, I_mn_m_ind, axis=0)
 

@@ -8,7 +8,7 @@
 @function: Example of the action of the eth operators.
 """
 from numpy import (array, exp, cos, sin, sqrt, pi, max, abs)
-import multi_SWSH as ms
+import multi_X_SWSH as ms
 
 
 def h_int_ex():

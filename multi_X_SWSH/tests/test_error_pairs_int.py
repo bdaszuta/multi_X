@@ -10,7 +10,7 @@
 from numpy import (arange, abs, max)
 import pytest as pt
 
-import multi_SWSH as ms
+import multi_X_SWSH as ms
 
 ERR_CONST = 1e-12
 

@@ -9,10 +9,9 @@
 # Usage:
 #  Run from base of repository
 ######################################################
-MONITOR_DIRECTORY=$PWD                             # just use the current dir
-BASE_FILENAME=$PWD/multi_SWSH/tests/run_tests.py   # file containing unit tests
-TESTING_DIR=$PWD/multi_SWSH/tests
-PYTHONPATH=$PWD                                    # required to locate files
+MONITOR_DIRECTORY=$PWD                              # just use the current dir
+TESTING_DIR=$PWD/multi_X_SWSH/tests
+PYTHONPATH=$PWD                                     # required to locate files
 
 echo "===="
 echo "Monitoring $MONITOR_DIRECTORY"
@@ -27,10 +26,10 @@ export PYTHONPATH
 while true
 do
     inotifywait --timefmt '%d/%m/%y %H:%M:%S' --format '%T %w %f' \
-                --exclude '.*(\.pyc|~|\.sh|\.py#)|(.*#.*)' \
+                --exclude '.*(\.pyc|~|\.sh|\.py#|\.nbi|\.nbc|\.rst)|(.*#.*)' \
                 --quiet \
-	            --recursive \
-	            -r -e close_write ${MONITOR_DIRECTORY} \
+	        --recursive \
+	        -r -e close_write ${MONITOR_DIRECTORY} \
 	| while read date time dir file; do
 	STATUS="Modification observed @ ${time} on ${date}..."
 	echo "$STATUS"
@@ -38,7 +37,7 @@ do
 
         # run unit tests
         # cd $TESTING_DIR
-        pytest
+        py.test
 	# python $BASE_FILENAME
         # cd ..
     done

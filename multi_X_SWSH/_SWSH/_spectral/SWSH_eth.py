@@ -11,8 +11,8 @@ import numba as _nu
 import numpy as _np
 import fastcache as _fc
 
-from multi_SWSH._types import (_INT_PREC, _REAL_PREC)
-from multi_SWSH._settings import (_JIT_KWARGS, _FC_KWARGS)
+from multi_X_SWSH._types import (_INT_PREC, _REAL_PREC)
+from multi_X_SWSH._settings import (_JIT_KWARGS, _FC_KWARGS)
 
 
 @_fc.clru_cache(**_FC_KWARGS)

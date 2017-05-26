@@ -9,7 +9,7 @@
 """
 from numpy import (abs, cos, exp, max, pi, sin, sqrt)
 
-import multi_SWSH as ms
+import multi_X_SWSH as ms
 
 ERR_CONST = 1e-12
 

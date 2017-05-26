@@ -9,8 +9,8 @@
 """
 import numpy as _np
 
-from multi_SWSH._SWSH import SWSH_periodic_extension
-from multi_SWSH._types import (_INT_PREC, _COMPLEX_PREC)
+from multi_X_SWSH._SWSH import SWSH_periodic_extension
+from multi_X_SWSH._types import (_INT_PREC, _COMPLEX_PREC)
 
 # Fourier object instance
 FSi = None
@@ -132,8 +132,8 @@ def h_int_quadrature(s, h_int_sfun_N, n_wei_th, n_wei_ph):
 
 def _main():
     # Remove this later
-    import multi_SWSH._spectral.interface_Fourier_series as FS
-    import multi_SWSH._special.wigner_d_AnSum as swsh_an
+    import multi_X_SWSH._spectral.interface_Fourier_series as FS
+    import multi_X_SWSH._special.wigner_d_AnSum as swsh_an
 
     ########
     # Integer

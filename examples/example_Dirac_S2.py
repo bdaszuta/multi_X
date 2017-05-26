@@ -10,7 +10,7 @@
 from numpy import (abs, array, dot, sqrt, zeros)
 import matplotlib.pyplot as plt
 
-import multi_SWSH as ms
+import multi_X_SWSH as ms
 
 
 def calculate_charge_Q(psi_lm):
@@ -104,7 +104,7 @@ def evolve_RK4(ti, tf, N_t, z_ini, sys_fcn=None, sys_post_step_fcn=None,
 L = 33            # band-limit (th=ph)
 mu = 1.2          # mass parameter
 ti, tf = 0, 100   # initial and final times
-t_idx_key = 32    # control frequency of when 'Q' is computed
+t_idx_key = 32    # control frequency of 'Q' calculation
 N_t = 10000       # total number of time-steps (dt inferred)
 
 # generate an initial Dirac field in coefficient space

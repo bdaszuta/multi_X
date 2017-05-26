@@ -10,8 +10,8 @@ TN-style algorithm.
 import numpy as _np
 import numba as _nu
 
-from multi_SWSH._settings import _JIT_KWARGS
-from multi_SWSH._types import (_REAL_PREC, _INT_PREC)
+from multi_X_SWSH._settings import _JIT_KWARGS
+from multi_X_SWSH._types import (_REAL_PREC, _INT_PREC)
 
 # Init. values for recursion
 _INIT_H_INT = 1 / _np.sqrt(_np.array([2], dtype=_REAL_PREC))

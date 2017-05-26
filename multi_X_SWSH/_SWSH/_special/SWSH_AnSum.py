@@ -7,7 +7,7 @@
 """
 import numpy as _np
 
-from multi_SWSH._SWSH._special import wigner_d_AnSum
+from multi_X_SWSH._SWSH._special import wigner_d_AnSum
 
 
 def sylm(s, l, m, theta, phi):

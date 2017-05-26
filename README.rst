@@ -29,11 +29,46 @@ together with ``multi_X_SWSH.salm_to_sf`` implementing:
    \end{equation}
 
 
-How do I use this?
-------------------
- import multi_SWSH as ms
+Example usage
+-------------
+.. code-block:: python
 
-See also :ref:`examples` for a few use cases and :ref:`function_listing`.
+    from numpy import (abs, max)
+
+    import multi_X_SWSH as mXs
+
+    # specify spin-weights and band-limits
+    h_s, h_L_th, h_L_ph = -1, 7, 5   # half-integer * 2
+    s, L_th, L_ph = 3, 64, 48
+
+    # infer appropriate number of samples based on band-limit
+    h_N_th, h_N_ph = mXs.L_to_N(L_th=h_L_th, L_ph=h_L_ph,
+                                is_half_integer=True)
+    N_th, N_ph = mXs.L_to_N(L_th=L_th, L_ph=L_ph, is_half_integer=False)
+
+    # generate (half)-integer test data
+    h_salm = mXs.generate_random_salm(s=h_s, L_th=h_L_th, L_ph=h_L_ph,
+                                      is_half_integer=True)
+
+    salm = mXs.generate_random_salm(s=s, L_th=L_th, L_ph=L_ph,
+                                    is_half_integer=False)
+
+    # transform to functions
+    h_sf = mXs.salm_to_sf(s=h_s, alm=h_salm, N_th=h_N_th, N_ph=h_N_ph,
+                          is_half_integer=True)
+
+    sf = mXs.salm_to_sf(s=s, alm=salm, N_th=N_th, N_ph=N_ph,
+                        is_half_integer=False)
+
+    # transform back
+    rh_salm = mXs.sf_to_salm(s=h_s, f=h_sf, is_half_integer=True)
+    r_salm = mXs.sf_to_salm(s=s, f=sf, is_half_integer=False)
+
+    # compute max. abs. error
+    h_err = max(abs(rh_salm - h_salm))
+    err = max(abs(r_salm - salm))
+With the above we find ``h_err = 1.04e-15`` and ``err = 2.45e-14``. See also
+:ref:`examples` for a few further use cases and :ref:`function_listing`.
 
 
 Code technology

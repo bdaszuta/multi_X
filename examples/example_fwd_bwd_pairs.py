@@ -12,7 +12,7 @@ Here we perform the sequence of transformations: salm -> sf -> \tilde{salm}
 and compare initial salm with the reconstructed \tilde{salm}.
 """
 from numpy import (array, abs, max)
-import multi_SWSH as ms
+import multi_X_SWSH as ms
 
 
 ###############################################################################

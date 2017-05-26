@@ -9,8 +9,8 @@ entries for testing.
 import numba as _nu
 import numpy as _np
 
-from multi_SWSH._types import _INT_PREC
-from multi_SWSH._settings import _JIT_KWARGS
+from multi_X_SWSH._types import _INT_PREC
+from multi_X_SWSH._settings import _JIT_KWARGS
 
 
 @_nu.jit(**_JIT_KWARGS)
@@ -120,25 +120,21 @@ def _h_int_gen_rand_salm(s_arr, L_r_th, L_r_ph, L_th_tr):
         L_th_tr = L_r_th
 
     s_arr = s_arr / 2
-    L_r_th = L_r_th / 2
-    L_r_ph = L_r_ph / 2
-    L_th_tr = L_th_tr / 2
+
     # >s_arr ~ Spin-weights
     # >L_r_th ~ Maximal L_th to populate
     # >L_r_ph ~ Maximal L_ph to populate
     # >L_th_tr ~ Bandlimit (use for zero-padding to a size)
     num_fun = s_arr.shape[0]
 
-    L2_r_th, L2_r_ph, L2_th_tr = 2 * L_r_th, 2 * L_r_ph, 2 * L_th_tr
-
     # begin by dense construction:
-    h_sz_salm = _INT_PREC(3 / 4 + (L2_th_tr / 2) * (2 + L2_th_tr / 2))
+    h_sz_salm = _INT_PREC(3 / 4 + (L_th_tr / 2) * (2 + L_th_tr / 2))
 
     # salm = _np.zeros((num_fun, sz_salm), dtype=_COMPLEX_PREC)
     h_salm = ((1 - 2 * _np.random.rand(num_fun, h_sz_salm)) +
               1j * (1 - 2 * _np.random.rand(num_fun, h_sz_salm)))
 
-    _h_int_strip_tr(num_fun, s_arr, L2_r_th, L2_r_ph, L2_th_tr, h_salm)
+    _h_int_strip_tr(num_fun, s_arr, L_r_th, L_r_ph, L_th_tr, h_salm)
     return h_salm
 
 #

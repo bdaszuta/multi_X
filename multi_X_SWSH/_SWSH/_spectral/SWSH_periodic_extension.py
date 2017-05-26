@@ -7,15 +7,16 @@
 """
 import numpy as _np
 
-from multi_SWSH._types import _INT_PREC
+from multi_X_SWSH._types import (_INT_PREC, _REAL_PREC)
 
 
 def int_funcExtension(s, sw_fun):
     # [0,pi]x[0,2pi] -> [0,2pi]x[0,2pi]
     N_ph = sw_fun.shape[1]
     return _np.vstack(
-        (sw_fun, (-1)**s * _np.flipud(_np.roll(sw_fun[1:-1, :],
-                                               N_ph // 2, 1))))
+        (sw_fun, (-1) ** _REAL_PREC(s) *
+         _np.flipud(_np.roll(sw_fun[1:-1, :],
+                             N_ph // 2, 1))))
 
 
 def int_funcDoubleExtension(s, sw_fun):
@@ -34,7 +35,7 @@ def h_int_funcExtension(s, sw_fun):
     sw_fun_E = _np.hstack((sw_fun, -sw_fun))
 
     s_int = _INT_PREC(2 * s)
-    s_ph = -(1j**s_int)
+    s_ph = -(1j ** s_int)
 
     # extend to D_III U D_IV
     sw_fun_E = _np.vstack(

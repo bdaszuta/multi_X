@@ -9,9 +9,9 @@ see read.nfo.
 import numpy as _np
 # import numba as _nu
 
-from multi_SWSH import (_SWSH, _types)
-from multi_SWSH._SWSH.random_coefficients import (_int_gen_rand_salm,
-                                                  _h_int_gen_rand_salm)
+from multi_X_SWSH import (_SWSH, _types)
+from multi_X_SWSH._SWSH.random_coefficients import (_int_gen_rand_salm,
+                                                    _h_int_gen_rand_salm)
 
 
 def _int_salm(s_arr, f_arr):
