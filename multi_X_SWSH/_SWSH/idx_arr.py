@@ -7,9 +7,10 @@
 desired band-limit and conversions between 1d array idxs and (l, m) type
 indices.
 """
+import numpy as _np
 import numba as _nu
 
-from multi_X_SWSH._types import _INT_PREC
+from multi_X_SWSH._types import (_INT_PREC, _COMPLEX_PREC)
 from multi_X_SWSH._settings import _JIT_KWARGS
 from multi_X_SWSH._doc_replacements import _rep_doc
 
@@ -180,6 +181,55 @@ def L_compatible(L_th=None, L_ph=None, is_half_integer=True):
         return _INT_PREC((L_th - 3) // 2), _INT_PREC((L_ph - 1) // 2)
     return (_INT_PREC(3 + 2 * L_th), _INT_PREC(1 + 2 * L_ph))
 
+
+def salm_from_idx_dict(idx_dict=None, L_th=None, L_ph=None, is_dense=True,
+                       is_half_integer=True):
+    '''
+    Convenience function for construction of an salm array via a dictionary.
+
+    Parameters
+    ----------
+    idx_dict = None : dict
+        Dictionary to use during 'salm' construction. Keys should correspond to
+        a (l, m) tuple with associated data being the value that is to be
+        inserted.
+
+    L_th = None : int
+        The band-limit to use in the 'th' direction.
+
+    L_ph = None : int
+        (Optional) The band-limit to use in the 'ph' direction.
+
+    is_dense = True : bool
+        Control whether a sparse 'salm' array is to be constructed.
+
+    is_half_integer = True : bool
+        Specify what type of parameters are in use.
+
+    Returns
+    -------
+    array-like
+        The populated array
+
+    Examples
+    --------
+    >>> salm_from_idx_dict(idx_dict={(1, 1): 1, (3, 1): -1}, L_th=5,
+    ...                    is_half_integer=True)  # doctest: +SKIP
+    array([ 0.+0.j,  1.+0.j,  0.+0.j,  0.+0.j, -1.+0.j,  0.+0.j,  0.+0.j,
+            0.+0.j,  0.+0.j,  0.+0.j,  0.+0.j,  0.+0.j])
+    '''
+    if L_ph is None:
+        L_ph = L_th
+
+    salm_sz = arr_sz_calc(L_th=L_th, is_half_integer=is_half_integer)
+    salm = _np.zeros(salm_sz, dtype=_COMPLEX_PREC)
+
+    for lm_tup, val in idx_dict.items():
+        ix = arr_idx_map(l=lm_tup[0], m=lm_tup[1],
+                         is_half_integer=is_half_integer)
+        salm[ix] = val
+
+    return salm
 
 ###############################################################################
 # inject doc vars.

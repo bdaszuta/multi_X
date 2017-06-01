@@ -53,8 +53,8 @@ def eth_build(s=None, L=None, type=-1, is_dense=True, is_half_integer=True):
     if is_half_integer:
         arr_sz = _INT_PREC(3 / 4 + (L / 2) * (2 + L / 2))
         eth_op = _np.zeros(arr_sz, dtype=_REAL_PREC)
-        for l in _np.arange(_np.abs(s), L + 1, 2):
-            for m in _np.arange(-L, L + 1, 2):
+        for l in _np.arange(_np.abs(s) + 2, L + 1, 2):
+            for m in _np.arange(-l, l + 1, 2):
                 idx = _INT_PREC(((m + l * (l / 2 + 1) - 1 / 2)) / 2)
                 # map to half integer differences
                 lps, lms = (l + s) / 2, (l - s) / 2
@@ -65,8 +65,8 @@ def eth_build(s=None, L=None, type=-1, is_dense=True, is_half_integer=True):
     else:
         arr_sz = (L + 1) ** 2
         eth_op = _np.zeros(arr_sz, dtype=_REAL_PREC)
-        for l in _np.arange(_np.abs(s), L + 1):
-            for m in _np.arange(-L, L + 1):
+        for l in _np.arange(_np.abs(s) + 1, L + 1):
+            for m in _np.arange(-l, l + 1):
                 idx = l * (l + 1) + m
                 if type == -1:
                     eth_op[idx] = _np.sqrt((l + s) * (l - s + 1))
