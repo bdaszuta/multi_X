@@ -65,7 +65,7 @@ def eth_build(s=None, L=None, type=-1, is_dense=True, is_half_integer=True):
     else:
         arr_sz = (L + 1) ** 2
         eth_op = _np.zeros(arr_sz, dtype=_REAL_PREC)
-        for l in _np.arange(_np.abs(s) + 1, L + 1):
+        for l in _np.arange(_np.abs(s), L + 1):
             for m in _np.arange(-l, l + 1):
                 idx = l * (l + 1) + m
                 if type == -1:
